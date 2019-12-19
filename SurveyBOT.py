@@ -5,7 +5,7 @@ from selenium import webdriver
 from time import sleep
 from random import randrange
 from datetime import date
-from survey import globalDeclaration
+from Survey import globalDeclaration
 from twilio.base.exceptions import TwilioRestException, TwilioException
 from json.decoder import JSONDecodeError
 
