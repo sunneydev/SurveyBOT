@@ -1,250 +1,209 @@
+import json
+import names
+from twilio.rest import Client
 from selenium import webdriver
-from random import randint
 from time import sleep
-from json import load, dumps
+from random import randrange
+from datetime import date
+from Survey import globalDeclaration
+from twilio.base.exceptions import TwilioRestException, TwilioException
+from json.decoder import JSONDecodeError
 
-answers = []
-stage2 = []
-stage3 = []
-stage4 = []
-stage5 = []
-stage6 = []
-stage7 = []
-stage8 = []
-stage9 = []
-onlyProbableAnswers = [5, 6, 8, 12]
+smslist = []
 
-def completeSurvey():
-    # Perceived Access
-    webkey.find_element_by_id("label-access_buy-" + answers[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-access_people-" + answers[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-access_store-" + answers[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-access_dispensary-" + answers[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-access_card-" + str(randint(1, 3))).click()
-    sleep(2)
-    webkey.find_element_by_id("label-access_kids-" + answers[4]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Source
-    webkey.find_element_by_id("id-__chk__source_30_days_2_RC_" + answers[5]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Lifetime Marijuana Use
-    webkey.find_element_by_id("label-life_use_all-" + answers[6]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Monthly Marijuana Use
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Susceptibility
-    webkey.find_element_by_id("label-susceptibility_1-" + stage2[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-susceptibility_2-" + stage2[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-susceptibility_3-" + stage2[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-susceptibility_4-" + stage2[3]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # How Marijuana Makes People Feel
-    webkey.find_element_by_id("label-meeq_1-" + stage3[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-meeq_2-" + stage3[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-meeq_3-" + stage3[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-meeq_4-" + stage3[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-meeq_5-" + stage3[4]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-meeq_6-" + stage3[5]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Perceived Harm
-    webkey.find_element_by_id("label-harm_month-" + stage4[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-harm_weekly-" + stage4[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-harm_regularly-" + stage4[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-harm_school-" + stage4[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-harm_car-" + stage4[4]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-harm_pass-" + stage4[5]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Perceived Social Norms
-    webkey.find_element_by_id("label-norms_friends-" + stage5[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-norms_1-" + stage5[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-norms_2-" + stage5[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-norms_3-" + stage5[3]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Substance Use
-    webkey.find_element_by_id("label-sub_cigs-" + stage6[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_cigars_days-" + stage6[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_chew_days-" + stage6[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_vape-" + stage6[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_quit-" + stage6[4]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_alcohol_days-" + stage6[5]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-sub_rx-" + stage6[6]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Advertising
-    webkey.find_element_by_id("label-advertise_1-" + stage7[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_2-" + stage7[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_email-" + stage7[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_coupon-" + stage7[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_billboard-" + stage7[4]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_news-" + stage7[5]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-advertise_truck-" + stage7[6]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Resilience
-    webkey.find_element_by_id("label-res_1-" + stage8[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-res_2-" + stage8[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-res_3-" + stage8[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-res_4-" + stage8[3]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-res_5-" + stage8[4]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-res_6-" + stage8[5]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    sleep(2)
-    # Culture
-    webkey.find_element_by_id("label-culture_1-" + stage9[0]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-culture_2-" + stage9[1]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-culture_3-" + stage9[2]).click()
-    sleep(2)
-    webkey.find_element_by_id("label-culture_4-" + stage9[3]).click()
-    sleep(2)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
-    webkey.close()
-    print("\n\nSurvey is done!\n\nDetails are saved in details.json")
+fname = names.get_first_name(gender='female')
+lname = names.get_last_name()
+parentName = names.get_first_name(gender='male') + " " + lname
 
-def ageCalculator(years):
-    return 2007 - int(years)
+y = randrange(2002, 2006)
+m = randrange(1, 12)
+d = randrange(1, 27)
 
-def surveyPart():
-    webkey.find_element_by_id("label-sex_birth-2").click()
-    webkey.find_element_by_id("label-gender-" + str(randint(1, 7))).click()
-    webkey.find_element_by_id("label-age-" + str(ageCalculator(yob))).click()
-    webkey.find_element_by_id("label-grade-" + str(ageCalculator(yob))).click()
-    webkey.find_element_by_id("id-__chk__race_RC_" + str(randint(1, 7))).click()
-    sleep(1)
-    webkey.find_element_by_name("submit-btn-saverecord").click()
+if m >= 10 and d >= 10:
+    pass
+elif m < 10 and d < 10:
+    m = "0" + str(m)
+    d = "0" + str(d)
+elif m < 10 and d >= 10:
+    m = "0" + str(m)
+elif m >= 10 and d < 10:
+    d = "0" + str(d)
 
-    n = randint(1, 3)
-    initializeAnswers(n)
+dob = "%s-%s-%s" % (m, d, y)
 
-    # 1 - no smoke
-    # 2 - smoke some
-    # 3 - yes i smoke a lot
+element_names = {}
 
-def initializeAnswers(n):
-    global answers
-    global stage2
-    global stage3
-    global stage4
-    global stage5
+def checkList():
+    global passAddress
+    try:
+        with open("Addresses.json") as l:
+            addys = json.load(l)
+            passAddress = addys['addresses'][0]
+            del addys['addresses'][0]
 
-    # Stage 1
-    while len(answers) < 5:
-        answers.append(str(randint(n, n+1)))
-    if n == 1:
-        answers.append("1")
-        answers.append("0")
-    else:
-        answers.append(str(onlyProbableAnswers[randint(0, 3)]))
-        answers.append(str(randint(1, 4)))
+            with open("Addresses.json", "w") as w:
+                json.dump(addys, w)
+            credentialCheck()
+    except:
+        print("\nCouldn't load addresses")
+        print("Do you want to try again, or enter an address manually?")
+        print("1. Try again\n2. Enter Address Manually")
+        b = input("\n> ")
+        if b == '1':
+            checkList()
+        elif b == '2':
+            passAddress = input("Address:\n> ")
+            credentialCheck()
+        else:
+            print("Not sure I understand, please try again")
+            checkList()
 
-    # Stage 2
-    if n == 1:
-        while len(stage2) < 4:
-            stage2.append(str(randint(n+2, n+3)))
-    elif n == 2:
-        while len(stage2) < 4:
-            stage2.append(str(randint(n, n+1)))
-    elif n == 3:
-        while len(stage2) < 4:
-            stage2.append(str(randint(n-2, n-1)))
+def credentialCheck():
+    try:
+        with open("credentials.json") as key:
+            data = json.load(key)
 
-    # Stage 3
-    while len(stage3) < 6:
-        stage3.append(str(randint(2, 5)))
+            if len(data['accountid']) == 34:
+                create_new_number(data['accountid'], data['accounttoken'])
+            else:
+                raise KeyError
+    except (KeyError, JSONDecodeError, FileNotFoundError, KeyError):
+        print("Please Enter credentials manually")
+        acid = input("Account ID\n> ")
+        act = input("Account Token\n> ")
+        with open("credentials.json", "w") as w:
+            data = {"accountid": acid, "accounttoken": act}
+            json.dump(data, w)
+        create_new_number(acid, act)
 
-    # Stage 4
-    if n == 1:
-        stage4 = ["2", "3", "4", "0", "0", "0"]
-    elif n == 2 or n == 3:
-        stage4 = ["1", "2", "3"]
-        while len(stage4) < 6:
-            stage4.append(str(randint(0, 1)))
+# Gets all the values required to then PASS it to another function
+def create_new_number(id, token):
+    global client
+    client = Client(id, token)
 
-    # Stage 5
-    stage5.append(str(randint(1, 5)))
-    if n == 1:
-        stage5.extend([str(randint(1, 3)), "1", "1"])
-    elif n == 2 or n == 3:
-        stage5.extend(["3", "2", str(randint(1, 3))])
+    try:
+        local = client.available_phone_numbers('US').local.list(area_code=626, limit=1)
+        incoming_phone_number = client.incoming_phone_numbers.create(phone_number=local[0].phone_number)
+    except TwilioException:
+        print("\nCouldn't Login\nTry again!")
+        with open("credentials.json", "w") as clear:
+            return credentialCheck()
 
-    # Stage 6
-    stage6.extend([str(randint(0, 1)), str(randint(1, 4)), str(randint(1, 4)), "0", "0", str(randint(1, 3)), str(randint(1, 5))])
+    except TwilioRestException:
+        print("Please delete your previous number to create a new one\nPress Enter when you do so")
+        inpcheck = input("> ")
+        if inpcheck == '':
+            create_new_number(id, token)
+        else:
+            return
 
-    # Stage 7
-    stage7.extend([str(randint(1, 7)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 4)), str(randint(1, 4))])
+    print("Login of Twilio was successful... \nProceeding with the program")
+    global numberf
+    global numbersid
+    numberf = incoming_phone_number.friendly_name
+    numbersid = incoming_phone_number.sid
+    smsCheck(numberf, id, token)
 
-    # Stage 8
-    k = randint(1, 2)
-    if k == 1:
-        stage8.extend([str(randint(3, 5)), str(randint(1, 3)), str(randint(3, 5)), str(randint(1, 4)), str(randint(3, 5)), str(randint(1, 3))])
-    elif k == 2:
-        stage8.extend([str(randint(1, 3)), str(randint(3, 5)), str(randint(1, 3)), str(randint(2, 5)), str(randint(1, 3)), str(randint(3, 5))])
+# Gets all the values required to then PASS it to another function
+def passValues(numbersf):
+    address = passAddress
+    zip_code = "91731"
+    number =  numbersf
+    emailaddy = input("First Name - %s\nLast Name - %s\nEmail Address: \n> " % (fname, lname))
+    global date_of_birth
+    date_of_birth = dob
+    createFulllist(fname, lname, address, zip_code, number, emailaddy, date_of_birth)
 
-    # Stage 9
-    stage9.extend([str(randint(1, 3)), str(randint(1, 3)), str(randint(1, 3)), str(randint(1, 2))])
+def smsCheck(number, id, token):
+    c = webdriver.Firefox()
+    c.get('http://j.mp/2W6LJXo')
 
-    completeSurvey()
+    c.find_element_by_name("teen_first_name").send_keys(fname)
+    c.find_element_by_name("teen_last_name").send_keys(lname)
+    c.find_element_by_name("teen_phone").send_keys(number)
+    c.find_element_by_name("parent_signature").send_keys(parentName)
+    c.find_element_by_name("submit-btn-saverecord").click()
+    print("Done... Now waiting for a message")
+    c.close()
+    sleep(10)
 
-def globalDeclaration(key, dob):
-    global webkey
-    webkey = key
-    global yob
-    yob = dob
+    for sms in client.messages.list(from_='+13233700072'): # Adds up messages to [smslist] that were sent from a specific number
+        smslist.append(sms.body) # Adds message bodies to the list
 
-    surveyPart()
+    client.incoming_phone_numbers(numbersid).delete()
+    global urls
+    urls = smslist[0]
+    passValues(number)
+
+# Executes the values and sends them to credentials.json and starts the browser
+def createFulllist(firstname, lastname, address, zip_code, number, emailaddy, date_of_birth):
+    element_names = {
+    "infromation_fname": firstname,
+    "infromation_lname": lastname,
+    "street_address": passAddress,
+    "city_sis": "El Monte",
+    "state_sis": "CA",
+    "zip_code": "91731",
+    "cell_phone_number": number,
+    "email_address": emailaddy,
+    "date_of_birth": date_of_birth
+    }
+    detail_names = {
+    "First Names": firstname,
+    "Last Names": lastname,
+    "Addresses": passAddress,
+    "Phone Numbers": number,
+    "Email Addresses": emailaddy,
+    "Birthdays": date_of_birth
+    }
+    try:
+        with open("details.json") as r:
+
+            data = json.load(r)
+            desirableDict = data.copy()
+
+            for key in data.keys():
+                if key in detail_names:
+                    if type(data[key]) is list:
+                        data[key].extend([detail_names[key],])
+                    else:
+                        desirableDict[key] = [data[key],detail_names[key]]
+        with open("details.json",'w') as f:
+            f.write(json.dumps(desirableDict, indent=4, sort_keys=False))
+
+    except (JSONDecodeError, FileNotFoundError):
+        with open("details.json", "w") as w:
+            json.dump(detail_names, w)
+
+    browserStart(urls, element_names)
+
+def browserStart(url, list):
+    element_names = list
+    b = webdriver.Firefox()
+
+    # Goes to the URL where it all starts and agrees with the survey statement
+    b.get(url)
+    b.find_element_by_xpath("//select[@name='agreement']/option[text()='I agree']").click()
+
+    # Finds and CLICKS the FIRST submit button
+    button = b.find_element_by_xpath("//button[@name='submit-btn-saverecord']")
+    button.click()
+
+    sleep(1) # Sleeps 5 seconds for other page to load
+
+    # Function to return send_keys for each element and it's value we have
+    def variables(elementName, elementValue):
+        if elementName != "state_sis":
+            value = b.find_element_by_name(elementName)
+            value.send_keys(elementValue) # Deleted return
+        elif elementName == "state_sis":
+            b.find_element_by_xpath("//select[@name='state_sis']/option[text()='California']").click()
+
+    # For variable in the list, send it through the function to send_keys
+    for variable, variableValues in element_names.items():
+        variables(variable, variableValues)
+    b.find_element_by_name("submit-btn-saverecord").click()
+
+    globalDeclaration(b, date_of_birth.split("-")[2])
+
+checkList()
