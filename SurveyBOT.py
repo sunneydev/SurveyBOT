@@ -52,7 +52,7 @@ def checkList():
         checkList()
     zip_code = input("\nZip Code:\n> ")
     passAddress = input("\nAddress:\n> ")
-    print("Name - %s\nLast Name - %s\nParent Name - %s\nZip Code - %s\nAddress - %s" % (fname, lname, parentName, zip_code, passAddress))
+    print("\nName - %s %s\nParent Name - %s\nZip Code - %s\nAddress - %s" % (fname, lname, parentName, zip_code, passAddress))
     print("\nAre you sure you want to proceed?\n1. Yes\n2. No")
     anw2 = input("> ")
     if anw2 == "1":
@@ -73,7 +73,7 @@ def credentialCheck():
             else:
                 raise KeyError
     except (KeyError, JSONDecodeError, FileNotFoundError, KeyError):
-        print("Please Enter credentials manually")
+        print("\nPlease Enter credentials manually")
         acid = input("Account ID\n> ")
         act = input("Account Token\n> ")
         with open("credentials.json", "w") as w:
@@ -102,7 +102,7 @@ def create_new_number(id, token):
         else:
             return
 
-    print("Login of Twilio was successful... \nProceeding with the program")
+    print("\nLogin of Twilio was successful... \nProceeding with the program")
     global numberf
     global numbersid
     numberf = incoming_phone_number.friendly_name
@@ -114,11 +114,11 @@ def passValues(numbersf):
     global date_of_birth
     address = passAddress
     number =  numbersf
-    emailcheck = input("First Name - %s\nLast Name - %s\nEmail Address: \n> " % (fname, lname))
-    if input("Are you sure?\n1. Yes\n2. No") == "1":
+    emailcheck = input("Name - %s %s\nEmail Address: \n> " % (fname, lname))
+    if input("Are you sure?\n1. Yes\n2. No\n> ") == "1":
         emailaddy = emailcheck
     else:
-        emailaddy = input("Input Email\n> ")
+        emailaddy = input("\nInput Email\n> ")
     date_of_birth = dob
     createFulllist(fname, lname, address, zip_code, number, emailaddy, date_of_birth)
 
