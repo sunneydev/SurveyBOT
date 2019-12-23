@@ -11,9 +11,12 @@ from json.decoder import JSONDecodeError
 
 smslist = []
 
-fname = names.get_first_name(gender='female')
-lname = names.get_last_name()
-parentName = names.get_first_name(gender='male') + " " + lname
+def rannames():
+    global fname, lname, parentName
+
+    fname = names.get_first_name(gender='female')
+    lname = names.get_last_name()
+    parentName = names.get_first_name(gender='male') + " " + lname
 
 y = randrange(2002, 2006)
 m = randrange(1, 12)
@@ -34,29 +37,31 @@ dob = "%s-%s-%s" % (m, d, y)
 element_names = {}
 
 def checkList():
-    global passAddress
-    try:
-        with open("Addresses.json") as l:
-            addys = json.load(l)
-            passAddress = addys['addresses'][0]
-            del addys['addresses'][0]
-
-            with open("Addresses.json", "w") as w:
-                json.dump(addys, w)
-            credentialCheck()
-    except:
-        print("\nCouldn't load addresses")
-        print("Do you want to try again, or enter an address manually?")
-        print("1. Try again\n2. Enter Address Manually")
-        b = input("\n> ")
-        if b == '1':
-            checkList()
-        elif b == '2':
-            passAddress = input("Address:\n> ")
-            credentialCheck()
-        else:
-            print("Not sure I understand, please try again")
-            checkList()
+    global passAddress, zip_code, fname, lname, parentName
+    print("1. Generate random names\n2. No, I have my own names\n")
+    anw1 = input("> ")
+    if anw1 == "1":
+        rannames()
+    elif anw1 == "2":
+        fname = input("First Name\n> ")
+        print("")
+        lname = input("Last Name\n> ")
+        parentName = names.get_first_name(gender="male") + " " + lname
+    else:
+        print("Input 1 or 2 only")
+        checkList()
+    zip_code = input("\nZip Code:\n> ")
+    passAddress = input("\nAddress:\n> ")
+    print("Name - %s\nLast Name - %s\nParent Name - %s\nZip Code - %s\nAddress - %s" % (fname, lname, parentName, zip_code, passAddress))
+    print("\nAre you sure you want to proceed?\n1. Yes\n2. No")
+    anw2 = input("> ")
+    if anw2 == "1":
+        credentialCheck()
+    elif anw2 == "2":
+        checkList()
+    else:
+        print("Not sure I understand. Please try again.")
+        checkList()
 
 def credentialCheck():
     try:
@@ -106,11 +111,14 @@ def create_new_number(id, token):
 
 # Gets all the values required to then PASS it to another function
 def passValues(numbersf):
-    address = passAddress
-    zip_code = "91731"
-    number =  numbersf
-    emailaddy = input("First Name - %s\nLast Name - %s\nEmail Address: \n> " % (fname, lname))
     global date_of_birth
+    address = passAddress
+    number =  numbersf
+    emailcheck = input("First Name - %s\nLast Name - %s\nEmail Address: \n> " % (fname, lname))
+    if input("Are you sure?\n1. Yes\n2. No") == "1":
+        emailaddy = emailcheck
+    else:
+        emailaddy = input("Input Email\n> ")
     date_of_birth = dob
     createFulllist(fname, lname, address, zip_code, number, emailaddy, date_of_birth)
 
