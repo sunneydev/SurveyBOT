@@ -155,10 +155,7 @@ def completeSurvey():
     sleep(2)
     webkey.find_element_by_name("submit-btn-saverecord").click()
     webkey.close()
-    print("\n\nSurvey is done!\n\nDetails:")
-    with open("Details.json") as r:
-        data = load(r)
-        print(dumps(data, indent=4, sort_keys=False))
+    print("\n\nSurvey is done!\n\nDetails are saved in details.json")
 
 def ageCalculator(years):
     return 2007 - int(years)
