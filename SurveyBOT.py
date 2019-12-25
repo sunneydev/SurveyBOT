@@ -53,7 +53,7 @@ def checkList():
     zip_code = input("\nZip Code:\n> ")
     passAddress = input("\nAddress:\n> ")
     print("\nName - %s %s\nParent Name - %s\nZip Code - %s\nAddress - %s" % (fname, lname, parentName, zip_code, passAddress))
-    print("\nAre you sure you want to proceed?\n1. Yes\n2. No")
+    print("\n\nAre you sure you want to proceed?\n1. Yes\n2. No")
     anw2 = input("> ")
     if anw2 == "1":
         credentialCheck()
@@ -111,14 +111,17 @@ def create_new_number(id, token):
 
 # Gets all the values required to then PASS it to another function
 def passValues(numbersf):
-    global date_of_birth
+    global date_of_birth, emailaddy
     address = passAddress
     number =  numbersf
     emailcheck = input("Name - %s %s\nEmail Address: \n> " % (fname, lname))
-    if input("Are you sure?\n1. Yes\n2. No\n> ") == "1":
+    emailanswercheck = input("Are you sure?\n1. Yes\n2. No\n> ")
+    if emailanswercheck == "1":
         emailaddy = emailcheck
-    else:
+    elif emailanswercheck == "2":
         emailaddy = input("\nInput Email\n> ")
+    else:
+        passValues(numbersf)
     date_of_birth = dob
     createFulllist(fname, lname, address, zip_code, number, emailaddy, date_of_birth)
 
@@ -212,6 +215,6 @@ def browserStart(url, list):
         variables(variable, variableValues)
     b.find_element_by_name("submit-btn-saverecord").click()
 
-    globalDeclaration(b, date_of_birth.split("-")[2])
+    globalDeclaration(b, date_of_birth.split("-")[2], emailaddy)
 
 checkList()
