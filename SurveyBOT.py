@@ -160,8 +160,7 @@ def createFulllist(firstname, lastname, address, zip_code, number, emailaddy, da
     "date_of_birth": date_of_birth
     }
     detail_names = {
-    "First Names": firstname,
-    "Last Names": lastname,
+    "Names": firstname + " " + lastname,
     "Addresses": passAddress,
     "Phone Numbers": number,
     "Email Addresses": emailaddy,
