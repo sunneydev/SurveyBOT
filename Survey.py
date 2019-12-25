@@ -154,8 +154,16 @@ def completeSurvey():
     webkey.find_element_by_id("label-culture_4-" + stage9[3]).click()
     sleep(2)
     webkey.find_element_by_name("submit-btn-saverecord").click()
+    sleep(2)
+    webkey.find_element_by_xpath("//div[@id='survey_queue']/div/div/div/div[2]/button/span").click()
+    sleep(1)
+    webkey.find_element_by_id("survey_queue_email_send").send_keys(emailaddy)
+    sleep(1)
+    webkey.find_element_by_css_selector(".jqbuttonmed:nth-child(2)").click()
+    sleep(5)
+    print("\n" + webkey.find_element_by_xpath("//div[11]/div[2]").text)
     webkey.close()
-    print("\n\nSurvey is done!\n\nDetails are saved in details.json")
+    print("\nSurvey is done!\nDetails are saved in details.json")
 
 def ageCalculator(years):
     return 2007 - int(years)
@@ -241,10 +249,10 @@ def initializeAnswers(n):
 
     completeSurvey()
 
-def globalDeclaration(key, dob):
-    global webkey
+def globalDeclaration(key, dob, email):
+    global emailaddy, webkey, yob
+    emailaddy = email
     webkey = key
-    global yob
     yob = dob
 
     surveyPart()
