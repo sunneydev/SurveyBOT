@@ -235,7 +235,7 @@ def initializeAnswers(n):
     stage6.extend([str(randint(0, 1)), str(randint(1, 4)), str(randint(1, 4)), "0", "0", str(randint(1, 3)), str(randint(1, 5))])
 
     # Stage 7
-    stage7.extend([str(randint(1, 7)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 4)), str(randint(1, 4))])
+    stage7.extend([str(randint(1, 6)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 6)), str(randint(1, 4)), str(randint(1, 4)), str(randint(1, 4))])
 
     # Stage 8
     k = randint(1, 2)
