@@ -94,14 +94,6 @@ def create_new_number(id, token):
         with open("credentials.json", "w") as clear:
             return credentialCheck()
 
-    except TwilioRestException:
-        print("Please delete your previous number to create a new one\nPress Enter when you do so")
-        inpcheck = input("> ")
-        if inpcheck == '':
-            create_new_number(id, token)
-        else:
-            return
-
     print("\nLogin of Twilio was successful... \nProceeding with the program")
     global numberf
     global numbersid
